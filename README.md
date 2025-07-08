@@ -1,93 +1,188 @@
-# NailStore
+# 💅 Nail Store - Beautiful Nail Art Ideas
 
+> A modern Flutter web application for discovering, saving, and sharing stunning nail art designs.
 
+## ✨ Features
 
-## Getting started
+### 🎨 Design Discovery
+- **Extensive Collection**: Browse thousands of nail art designs from Unsplash
+- **Smart Categories**: French, Plain, Nail Art, Ombre, Glitter, Pastel, Wedding, Holiday
+- **Advanced Search**: Filter by categories, colors, and popularity
+- **Featured & Trending**: Discover popular and highly-rated designs
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### 👤 User Experience
+- **User Authentication**: Secure login/signup with persistent sessions
+- **"Keep Me Signed In"**: Stay logged in across browser sessions
+- **Personal Favorites**: Save and organize your favorite designs
+- **User Uploads**: Upload and share your own nail art creations
+- **Profile Management**: Edit profile information and track statistics
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### 🚀 Modern UI/UX
+- **Responsive Design**: Works perfectly on all screen sizes
+- **Material Design 3**: Beautiful, modern interface with gradient themes
+- **Smooth Animations**: Engaging transitions and interactions
+- **Skeleton Loading**: Elegant loading states for better UX
+- **Pull to Refresh**: Intuitive gesture-based refresh
 
-## Add your files
+### 🔧 Technical Features
+- **State Management**: Provider pattern for reactive state
+- **Offline Support**: Local storage for favorites and user data
+- **Image Caching**: Optimized image loading with caching
+- **PWA Ready**: Progressive Web App capabilities
+- **Cross-platform**: Flutter web with mobile-ready architecture
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## 🏗️ Architecture
 
+### Tech Stack
+- **Framework**: Flutter 3.x (Web)
+- **State Management**: Provider
+- **UI Components**: Material Design 3
+- **Image Handling**: Cached Network Image
+- **Local Storage**: SharedPreferences
+- **API Integration**: Unsplash API
+- **Typography**: Google Fonts (Poppins)
+
+### Project Structure
 ```
-cd existing_repo
-git remote add origin https://git.mulk.net/senaguventurk/nailStore.git
-git branch -M master
-git push -uf origin master
+lib/
+├── models/           # Data models (User, NailDesign, etc.)
+├── providers/        # State management (UserProvider, NailProvider)
+├── screens/          # UI screens (HomeScreen, ProfileScreen, etc.)
+├── services/         # API services (UnsplashService)
+├── utils/            # Constants and utilities
+└── widgets/          # Reusable UI components
 ```
 
-## Integrate with your tools
+## 🚀 Getting Started
 
-- [ ] [Set up project integrations](https://git.mulk.net/senaguventurk/nailStore/-/settings/integrations)
+### Prerequisites
+- Flutter SDK (3.0+)
+- Dart SDK (3.0+)
+- Web browser (Chrome, Firefox, Safari)
 
-## Collaborate with your team
+### Installation
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+1. **Clone the repository**
+   ```bash
+   git clone https://git.mulk.net/senaguventurk/nailStore.git
+   cd nailStore
+   ```
 
-## Test and Deploy
+2. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
 
-Use the built-in continuous integration in GitLab.
+3. **Run the application**
+   ```bash
+   flutter run -d web-server --web-port 8080
+   ```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+4. **Build for production**
+   ```bash
+   flutter build web --web-renderer html
+   ```
 
-***
+### Development Server
+```bash
+# Start development server
+flutter run -d chrome --web-port 8080
 
-# Editing this README
+# Build and serve locally
+flutter build web
+python3 -m http.server 8000 --directory build/web
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## 💡 Usage
 
-## Suggestions for a good README
+### Getting Started
+1. **Sign Up/Login**: Create an account or login with existing credentials
+2. **Browse Designs**: Explore nail art designs by category or search
+3. **Save Favorites**: Heart designs you love to save them to your favorites
+4. **Upload Your Own**: Share your nail art creations with the community
+5. **Manage Profile**: Update your profile and track your statistics
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Key Features Demo
 
-## Name
-Choose a self-explaining name for your project.
+#### Authentication with Persistence
+- ✅ **"Keep me signed in"** checkbox on login
+- 🔄 **Auto-login** on browser restart
+- 🔐 **Secure session management**
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+#### Advanced Search
+- 🔍 Search by keywords, categories, or colors
+- 📊 Sort by popularity, date, or alphabetically
+- 🎯 Filter by multiple criteria simultaneously
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+#### User Uploads
+- 📸 Upload your own nail art photos
+- 🏷️ Add titles, descriptions, and categories
+- 🎨 Tag with color information
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## 🔧 Recent Improvements
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Authentication Persistence (Latest)
+- **Problem Solved**: Users no longer need to sign up repeatedly
+- **"Keep Me Signed In"**: Optional persistent login across browser sessions
+- **Enhanced UX**: Remember user preferences and data
+- **Error Recovery**: Robust session management with fallback mechanisms
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### Performance Optimizations
+- **Image Caching**: Reduced load times with intelligent caching
+- **Lazy Loading**: Efficient memory usage with on-demand loading
+- **Optimized Builds**: Tree-shaking and asset optimization
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+## 🎯 Roadmap
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+### Upcoming Features
+- [ ] **Social Features**: Follow other users, comments, and likes
+- [ ] **AI Integration**: AI-powered design recommendations
+- [ ] **Mobile App**: Native iOS and Android applications
+- [ ] **Push Notifications**: Real-time updates and reminders
+- [ ] **Advanced Editor**: In-app design creation tools
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### Technical Improvements
+- [ ] **Dark Mode**: Complete dark theme implementation
+- [ ] **Accessibility**: Enhanced screen reader and keyboard support
+- [ ] **Performance**: Further optimization for large datasets
+- [ ] **Testing**: Comprehensive unit and integration tests
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## 🤝 Contributing
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+We welcome contributions! Here's how you can help:
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### Development Setup
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and test thoroughly
+4. Commit your changes: `git commit -m 'Add amazing feature'`
+5. Push to the branch: `git push origin feature/amazing-feature`
+6. Submit a pull request
 
-## License
-For open source projects, say how it is licensed.
+### Code Style
+- Follow [Flutter style guide](https://docs.flutter.dev/development/tools/formatting)
+- Use meaningful variable and function names
+- Add comments for complex logic
+- Ensure responsive design principles
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Unsplash API**: For providing beautiful nail art images
+- **Flutter Community**: For excellent packages and resources
+- **Material Design**: For design system inspiration
+- **Google Fonts**: For beautiful typography
+
+## 📞 Support
+
+For questions, issues, or suggestions:
+- 🐛 **Bug Reports**: Create an issue on GitLab
+- 💬 **Discussions**: Use GitLab discussions for questions
+- 📧 **Email**: Contact the development team
+
+---
+
+**Built with ❤️ using Flutter | Designed for beauty and performance**
