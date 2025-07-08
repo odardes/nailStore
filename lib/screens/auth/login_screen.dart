@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   
   bool _isLoginMode = true;
   bool _obscurePassword = true;
+  bool _rememberMe = true; // Default to true for better UX
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -150,6 +151,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             _buildEmailField(),
             const SizedBox(height: 16),
             _buildPasswordField(),
+            if (_isLoginMode) ...[
+              const SizedBox(height: 16),
+              _buildRememberMeCheckbox(),
+            ],
             const SizedBox(height: 24),
             _buildSubmitButton(),
           ],
@@ -258,6 +263,44 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
+  Widget _buildRememberMeCheckbox() {
+    return Row(
+      children: [
+        Checkbox(
+          value: _rememberMe,
+          activeColor: AppConstants.primaryPink,
+          onChanged: (value) {
+            setState(() {
+              _rememberMe = value ?? true;
+            });
+          },
+        ),
+        const SizedBox(width: 8),
+        const Text(
+          'Keep me signed in',
+          style: TextStyle(
+            color: AppConstants.textDark,
+            fontSize: 14,
+          ),
+        ),
+        const Spacer(),
+        GestureDetector(
+          onTap: () {
+            // Forgot password functionality can be added here
+          },
+          child: const Text(
+            'Forgot Password?',
+            style: TextStyle(
+              color: AppConstants.primaryPink,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildSubmitButton() {
     return Consumer<UserProvider>(
       builder: (context, userProvider, child) {
@@ -360,6 +403,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       success = await userProvider.login(
         email: _emailController.text.trim(),
         password: _passwordController.text,
+        rememberMe: _rememberMe,
       );
       
       if (!success && mounted) {

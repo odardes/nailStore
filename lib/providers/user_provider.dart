@@ -29,6 +29,7 @@ class UserProvider with ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       final isLoggedIn = prefs.getBool(_isLoggedInKey) ?? false;
+      final sessionType = prefs.getString('session_type');
       
       if (isLoggedIn) {
         final userJson = prefs.getString(_userKey);
@@ -36,12 +37,28 @@ class UserProvider with ChangeNotifier {
           final userMap = json.decode(userJson) as Map<String, dynamic>;
           _currentUser = User.fromJson(userMap);
           _isLoggedIn = true;
+          
+          // Only extend session if it's not temporary
+          if (sessionType != 'temporary') {
+            await prefs.setBool(_isLoggedInKey, true);
+          }
         }
       }
     } catch (e) {
-      // Error loading user data
-      _currentUser = null;
-      _isLoggedIn = false;
+      // Error loading user data - try to keep user logged in if data exists
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final userJson = prefs.getString(_userKey);
+        if (userJson != null) {
+          final userMap = json.decode(userJson) as Map<String, dynamic>;
+          _currentUser = User.fromJson(userMap);
+          _isLoggedIn = true;
+          await prefs.setBool(_isLoggedInKey, true);
+        }
+      } catch (e2) {
+        _currentUser = null;
+        _isLoggedIn = false;
+      }
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -83,6 +100,11 @@ class UserProvider with ChangeNotifier {
       _currentUser = user;
       _isLoggedIn = true;
 
+      // Registration always remembers user
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_isLoggedInKey, true);
+      await prefs.remove('session_type');
+
       _isLoading = false;
       notifyListeners();
       return true;
@@ -98,6 +120,7 @@ class UserProvider with ChangeNotifier {
   Future<bool> login({
     required String email,
     required String password,
+    bool rememberMe = true,
   }) async {
     _isLoading = true;
     notifyListeners();
@@ -118,7 +141,14 @@ class UserProvider with ChangeNotifier {
         }
         
         _isLoggedIn = true;
-        await prefs.setBool(_isLoggedInKey, true);
+        await prefs.setBool(_isLoggedInKey, rememberMe);
+        
+        // If remember me is false, set a session flag
+        if (!rememberMe) {
+          await prefs.setString('session_type', 'temporary');
+        } else {
+          await prefs.remove('session_type');
+        }
         
         _isLoading = false;
         notifyListeners();
