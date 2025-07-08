@@ -10,6 +10,7 @@ import '../widgets/page_transitions.dart';
 import '../widgets/custom_refresh_indicator.dart';
 import '../widgets/advanced_search_modal.dart';
 import '../widgets/share_options_modal.dart';
+
 import '../utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: AnimatedHeart(
                       isFavorite: provider.favorites.isNotEmpty,
                       onTap: () {
-                        // Navigate to profile screen (favorites tab)
+                        // Navigate to profile screen
                         widget.onNavigateToProfile?.call();
                       },
                       size: 24,

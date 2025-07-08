@@ -31,6 +31,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  void switchToFavoritesTab() {
+    _tabController.animateTo(1);
+  }
+
   @override
   void dispose() {
     _tabController.dispose();

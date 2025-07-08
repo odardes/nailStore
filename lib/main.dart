@@ -192,6 +192,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
+  final GlobalKey _profileKey = GlobalKey();
   
   List<Widget> get _screens => [
     HomeScreen(
@@ -199,9 +200,16 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           _currentIndex = 1;
         });
+        // Switch to favorites tab after navigation
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (_profileKey.currentState != null) {
+            (_profileKey.currentState as dynamic).switchToFavoritesTab();
+          }
+        });
       },
     ),
     ProfileScreen(
+      key: _profileKey,
       onNavigateToHome: () {
         setState(() {
           _currentIndex = 0;
