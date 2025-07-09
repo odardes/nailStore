@@ -6,6 +6,14 @@ class UnsplashService {
   static const String _baseUrl = 'https://api.unsplash.com';
   static const String _accessKey = 'T7n-5tLeNy03e5nE69AWOSV83QjQnQIi4WedvGXcQ6w'; // Buraya API key'inizi yazın
   
+  final http.Client _httpClient;
+  
+  UnsplashService({http.Client? httpClient}) 
+      : _httpClient = httpClient ?? http.Client();
+  
+  // Static instance for backward compatibility
+  static final UnsplashService _instance = UnsplashService();
+  
   // Nail art search queries
   static const List<String> _nailQueries = [
     'nail art',
@@ -34,7 +42,25 @@ class UnsplashService {
     'Short': ['short nails', 'natural nails', 'everyday nails'],
   };
   
+  // Static methods for backward compatibility
   static Future<List<NailDesign>> fetchNailDesigns({
+    String? category,
+    int page = 1,
+    int perPage = 30,
+  }) async {
+    return _instance._fetchNailDesigns(
+      category: category,
+      page: page,
+      perPage: perPage,
+    );
+  }
+  
+  static Future<List<NailDesign>> fetchRandomDesigns({int count = 50}) async {
+    return _instance._fetchRandomDesigns(count: count);
+  }
+  
+  // Instance methods
+  Future<List<NailDesign>> _fetchNailDesigns({
     String? category,
     int page = 1,
     int perPage = 30,
@@ -42,7 +68,7 @@ class UnsplashService {
     try {
       String query = _getQueryForCategory(category);
       
-      final response = await http.get(
+      final response = await _httpClient.get(
         Uri.parse('$_baseUrl/search/photos?query=$query&page=$page&per_page=$perPage&orientation=portrait'),
         headers: {
           'Authorization': 'Client-ID $_accessKey',
@@ -63,7 +89,7 @@ class UnsplashService {
     }
   }
   
-  static String _getQueryForCategory(String? category) {
+  String _getQueryForCategory(String? category) {
     if (category == null) {
       return _nailQueries.first;
     }
@@ -76,7 +102,7 @@ class UnsplashService {
     return '$category nails';
   }
   
-  static NailDesign _convertToNailDesign(Map<String, dynamic> photo, String? category) {
+  NailDesign _convertToNailDesign(Map<String, dynamic> photo, String? category) {
     final urls = photo['urls'];
     final tags = photo['tags'] as List<dynamic>? ?? [];
     
@@ -100,7 +126,7 @@ class UnsplashService {
     );
   }
   
-  static String _generateTitle(Map<String, dynamic> photo, String? category) {
+  String _generateTitle(Map<String, dynamic> photo, String? category) {
     final user = photo['user'];
     final altDescription = photo['alt_description'] as String?;
     
@@ -112,14 +138,14 @@ class UnsplashService {
     return '$categoryName Design by ${user['name']}';
   }
   
-  static String _formatTitle(String title) {
+  String _formatTitle(String title) {
     // Clean and format title
     title = title.replaceAll(RegExp(r'[^\w\s]'), '');
     title = title.split(' ').take(6).join(' ');
     return title.length > 50 ? '${title.substring(0, 50)}...' : title;
   }
   
-  static String _generateDescription(Map<String, dynamic> photo, String? category) {
+  String _generateDescription(Map<String, dynamic> photo, String? category) {
     final tags = photo['tags'] as List<dynamic>? ?? [];
     final altDescription = photo['alt_description'] as String?;
     
@@ -140,7 +166,7 @@ class UnsplashService {
     return description;
   }
   
-  static List<String> _extractColors(List<dynamic> tags) {
+  List<String> _extractColors(List<dynamic> tags) {
     final colorKeywords = {
       'red': 'Kırmızı',
       'pink': 'Pembe',
@@ -175,7 +201,7 @@ class UnsplashService {
     return colors.take(3).toList();
   }
   
-  static String _getDifficultyForCategory(String? category) {
+  String _getDifficultyForCategory(String? category) {
     const Map<String, String> difficultyMap = {
       'French': 'Kolay',
       'Gel': 'Orta',
@@ -190,7 +216,7 @@ class UnsplashService {
     return difficultyMap[category] ?? 'Orta';
   }
   
-  static double _generateRating(Map<String, dynamic> photo) {
+  double _generateRating(Map<String, dynamic> photo) {
     final likes = photo['likes'] as int? ?? 0;
     
     // Convert likes to rating (0-5 scale)
@@ -203,19 +229,19 @@ class UnsplashService {
   }
   
   // Get random designs from different categories
-  static Future<List<NailDesign>> fetchRandomDesigns({int count = 50}) async {
+  Future<List<NailDesign>> _fetchRandomDesigns({int count = 50}) async {
     final List<NailDesign> allDesigns = [];
     
     for (final category in _categoryQueries.keys) {
       try {
-        final designs = await fetchNailDesigns(
+        final designs = await _fetchNailDesigns(
           category: category,
           perPage: count ~/ _categoryQueries.length,
         );
-                 allDesigns.addAll(designs);
-       } catch (e) {
-         // Silently continue if a category fails
-       }
+        allDesigns.addAll(designs);
+      } catch (e) {
+        // Silently continue if a category fails
+      }
     }
     
     // Shuffle for random order
